@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import './Cursor.css';
 import { Cursor as NS } from '../../@types/components';
 
@@ -26,7 +26,7 @@ const Content = (content: NS.ToolTip | NS.InfoPane) => {
 const Cursor = forwardRef<HTMLDivElement, NS.Props>((
     {
         messages = new Map(),
-        persist = false,
+        style = 'persist',
         background = '#EFEFEF',
         border = '2px solid #0F0F0F',
         borderRadius = '10px',
@@ -35,19 +35,24 @@ const Cursor = forwardRef<HTMLDivElement, NS.Props>((
     }, ref) => {
     const [position, setPosition] = useState<NS.Position>({ x: 0, y: 0 });
     const [id, setId] = useState<string | undefined>(undefined);
+    const [isVisible, setIsVisible] = useState<boolean>(style === 'persist');
+    const [isEntered, setIsEntered] = useState<boolean>(false);
 
     const handleMouseMove = (event: MouseEvent) => {
         setPosition({ x: event.clientX, y: event.clientY });
+        setIsVisible(style === 'fade');
     };
 
     const handleMouseEnter = (event: MouseEvent) => {
         if (event.currentTarget instanceof HTMLElement) {
             setId(event.currentTarget.id);
+            setIsEntered(true);
         }
     };
 
     const handleMouseLeave = () => {
         setId(undefined);
+        setIsEntered(false);
     };
 
     useEffect(() => {
@@ -56,6 +61,20 @@ const Cursor = forwardRef<HTMLDivElement, NS.Props>((
             document.removeEventListener('mousemove', handleMouseMove);
         };
     }, []);
+
+    useEffect(() => {
+        let interval: NodeJS.Timer;
+        if (isVisible && style === 'fade') {
+            interval = setInterval(() => {
+                setIsVisible(false);
+            }, 3000);
+        }
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        }
+    }, [isVisible, style]);
 
     useEffect(() => {
         if (messages.size > 0) {
@@ -79,20 +98,28 @@ const Cursor = forwardRef<HTMLDivElement, NS.Props>((
         }
     }, [messages]);
 
+    const getOpacity = useCallback((): number => {
+        return (style === 'persist' || isEntered || isVisible)
+            ? isOpacity(opacity)
+                ? opacity
+                : 0.9
+            : 0;
+    }, [style, opacity, isEntered, isVisible]);
+
     return (
-        <div ref={ref} id='cCircle' style={{
-            visibility: (id || persist) ? 'visible' : 'hidden',
-            width: id ? 'auto' : '20px',
-            height: id ? 'auto' : '20px',
-            opacity: isOpacity(opacity) ? opacity : 0.9,
-            borderRadius: id ? borderRadius : '15px',
-            backgroundColor: background,
-            border: border,
-            color: color,
-            padding: id ? '10px' : '0px',
-            top: position.y,
-            left: position.x
-        }}>
+        <div ref={ref} id='cCircle'
+             style={{
+                width: id ? 'auto' : '20px',
+                height: id ? 'auto' : '20px',
+                opacity: getOpacity(),
+                borderRadius: id ? borderRadius : '15px',
+                backgroundColor: background,
+                border: border,
+                color: color,
+                padding: id ? '10px' : '0px',
+                top: position.y,
+                left: position.x
+            }}>
             {id &&
                 Content(messages.get(id))
             }

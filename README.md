@@ -39,11 +39,11 @@ import { StyledInput } from 'comp0nents';
 
 const App = () => {
     
-    const imgRef = useRef(null);
+    const ref = useRef(null);
 
     return (
         <div className='app'>
-            <StyledInput ref={imgRef} />
+            <StyledInput ref={ref} />
         </div>
     );
 };

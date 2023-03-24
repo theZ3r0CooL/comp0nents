@@ -6,13 +6,36 @@ import { action } from '@storybook/addon-actions';
 import { Cursor } from '../index';
 import { Cursor as NS } from '../@types/components';
 
+const styles: Array<NS.Style> = ['persist', 'pop', 'fade'];
+
+const argTypes = {
+    messages: {
+        control: {
+            type: 'object'
+        },
+        defaultValue: new Map<string, NS.ToolTip>([
+            ['box0', { message: 'Checkout box 0?' }],
+            ['box1', { message: 'Learn more about box 1?' }],
+            ['box2', { message: 'I don\'t have any more questions, but here\'s box 2!' }]
+        ]),
+        description: 'a map of messages to display; the key of each should be the <code>id</code> of the element that should show the given message'
+    },
+    style: {
+        options: styles,
+        control: 'inline-radio',
+        mapping: styles,
+        description: 'How the `Cursor` object should persist or fade. Refresh component when switching between `fade` and `pop`',
+        defaultValue: 'persist'
+    }
+};
+
 export default {
     title: 'Components/Cursor',
     component: Cursor
 } as Meta;
 
 const Template: ComponentStory<typeof Cursor> = (
-    { messages, persist, background, border, borderRadius, color, opacity}, args) => {
+    { messages, style, background, border, borderRadius, color, opacity}, args) => {
     const boxStyle = {
         display: 'inline-block',
         width: '8%',
@@ -29,7 +52,7 @@ const Template: ComponentStory<typeof Cursor> = (
 
     return(
         <div style={{ zIndex: '0' }}>
-            <Cursor messages={messages} persist={persist} background={background} border={border} borderRadius={borderRadius} color={color} opacity={opacity} {...args} />
+            <Cursor messages={messages} style={style} background={background} border={border} borderRadius={borderRadius} color={color} opacity={opacity} {...args} />
             <div id='box0' style={boxStyle}><span>This is box 0</span></div>
             <div id='box1' style={boxStyle}><span>This is box 1</span></div>
             <div id='box2' style={boxStyle}><span>This is box 2</span></div>
@@ -38,33 +61,11 @@ const Template: ComponentStory<typeof Cursor> = (
 };
 
 export const Default = Template.bind({});
-Default.argTypes = {
-    messages: {
-        control: {
-          type: 'object'
-        },
-        defaultValue: new Map<string, NS.ToolTip>([
-            ['box0', { message: 'Checkout box 0?' }],
-            ['box1', { message: 'Learn more about box 1?' }],
-            ['box2', { message: 'I don\'t have any more questions, but here\'s box 2!' }]
-        ]),
-        description: 'a map of messages to display; the key of each should be the <code>id</code> of the element that should show the given message'
-    }
-};
-
-export const Persist = Template.bind({});
-Persist.argTypes = {
-    ...Default.argTypes,
-    persist: {
-        type: 'boolean',
-        defaultValue: true,
-        description: `always show the cursor; even when not expanded`
-    }
-};
+Default.argTypes = argTypes;
 
 export const CustomStyle = Template.bind({});
 CustomStyle.argTypes = {
-    ...Persist.argTypes,
+    ...argTypes,
     background: {
         type: 'string',
         defaultValue: '#EFEFEF',
@@ -98,7 +99,7 @@ CustomStyle.argTypes = {
 
 };
 
-export const Dynamic: Story<NS.Props> = ({messages, persist}, args) => {
+export const Dynamic: Story<NS.Props> = ({messages, style}, args) => {
     const [fileInfo, setFileInfo] = useState<Map<string, NS.ToolTip | NS.InfoPane> | undefined>(messages);
 
     function formatFileSize(fileSize: number): string {
@@ -146,7 +147,7 @@ export const Dynamic: Story<NS.Props> = ({messages, persist}, args) => {
 
     return (
         <>
-            <Cursor messages={fileInfo} persist={persist} {...args} />
+            <Cursor messages={fileInfo} style={style} {...args} />
             <div style={{
                 height: '200px', width: '100%', alignSelf: 'center', display: 'flex',
                 placeContent: 'center', placeItems: 'center', border: '1px solid black',
@@ -159,7 +160,7 @@ export const Dynamic: Story<NS.Props> = ({messages, persist}, args) => {
     );
 };
 Dynamic.argTypes = {
-    persist: {
+    style: {
         type: 'boolean',
         defaultValue: true,
         description: `always show the cursor; even when not expanded`

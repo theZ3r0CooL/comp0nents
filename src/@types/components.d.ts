@@ -30,6 +30,8 @@ namespace Cursor {
         y: number;
     };
 
+    type Style = 'persist' | 'pop' | 'fade';
+
     /*type E1<X> = <T>() => T extends X ? 0 : 1;
     type E2<X> = <T>() => T extends X ? 0 : 1;
     type IsEqual<X, Y> = E1<X> extends E2<Y> ? true : false;
@@ -52,7 +54,7 @@ namespace Cursor {
 
     interface Props extends ComponentPropsWithoutRef<'div'>{
         messages?: Map<string, ToolTip | InfoPane>;
-        persist?: boolean;
+        style?: Style;
         background?: string;
         border?: string;
         borderRadius?: string;
