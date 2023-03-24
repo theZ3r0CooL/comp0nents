@@ -1,0 +1,93 @@
+:root {
+    /*sizes*/
+    --size-checkbox: clamp(1.5rem, -0.8rem + 1.75vw, 2.5rem);
+}
+
+/*Checkbox Styling*/
+.checkbox-body {
+    display: flex;
+    place-items: center;
+    place-content: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.checkbox-body input {
+    position: absolute;
+    width: var(--size-checkbox);
+    height: var(--size-checkbox);
+    -webkit-appearance: none;
+    appearance: none;
+    display: grid;
+    place-content: center;
+    background-color: white;
+    border: solid 1px grey;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.checkbox-portion input {
+    background-color: grey;
+}
+
+.checkbox-body input:before {
+    content: "";
+    width: var(--size-checkbox);
+    height: var(--size-checkbox);
+    border-radius: 4px;
+    transform: scale(0);
+    box-shadow: inset var(--size-checkbox) var(--size-checkbox) cyan;
+}
+
+.checkbox-body input:not(:checked):hover:before {
+    transition: 120ms transform ease-in-out;
+    transform: scale(1);
+    box-shadow: inset var(--size-checkbox) var(--size-checkbox) grey;
+}
+
+.checkbox-body input:checked:before {
+    /*transition: 120ms transform ease-in-out;*/
+    transform: scale(1);
+}
+
+.checkbox-check {
+    margin-bottom: calc(var(--size-checkbox)*0.65);
+    margin-right: calc(var(--size-checkbox)*1.1);
+    pointer-events: none;
+}
+
+.checkbox-check span {
+    position: absolute;
+    width: var(--size-checkbox);
+    height: var(--size-checkbox);
+    box-shadow: inset var(--size-checkbox) var(--size-checkbox) white;
+}
+
+.check-portion {
+    clip-path: inset(8% 58% 22% 32% round var(--size-checkbox));
+    rotate: 90deg;
+}
+
+.check-top {
+    clip-path: inset(5% 46% 46% 46% round var(--size-checkbox));
+    rotate: 45deg;
+}
+
+.check-bottom {
+    clip-path: inset(25% 46% 46% 46% round var(--size-checkbox));
+    rotate: -45deg;
+}
+
+@media (min-width: 310px) and (max-width: 866px) {
+    .checkbox-body {
+        scale: 0.6;
+    }
+
+}

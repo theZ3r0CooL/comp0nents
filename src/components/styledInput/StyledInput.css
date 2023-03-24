@@ -1,0 +1,26 @@
+.input-err {
+    border: solid 2px darkred;
+}
+
+.styled-input {
+    width: 100%;
+    height: auto;
+    padding: 1.5vh 0.5vw !important;
+    margin-bottom: 2vh;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-button {
+    height: 100%;
+    fill: darkgrey;
+    cursor: pointer;
+    position: absolute;
+    right: 1%;
+}
+
+.password-button:hover {
+    fill: green;
+}

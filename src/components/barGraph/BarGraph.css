@@ -1,0 +1,14 @@
+.bar-graph {
+    width: max-content;
+    display: flex;
+    padding: 1rem 0 0 0;
+    outline: 1px solid firebrick;
+    align-items: end;
+    justify-content: end;
+}
+
+.bar-bar {
+    width: 2rem;
+    margin: 0 0.5rem;
+    background: blue;
+}

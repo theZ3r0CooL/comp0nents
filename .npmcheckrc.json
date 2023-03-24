@@ -1,0 +1,18 @@
+{
+  "depcheck": {
+      "ignoreMatches": [
+          "@rollup/*",
+          "@storybook/*",
+          "@svgr/webpack",
+          "@testing-library/user-event",
+          "@types/*",
+          "glob-parent",
+          "react-scripts",
+          "remark-parse",
+          "rollup*",
+          "trim*",
+          "typescript",
+          "webpack"
+      ]
+  }
+}
