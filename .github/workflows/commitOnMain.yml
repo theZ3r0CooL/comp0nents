@@ -21,4 +21,4 @@ jobs:
       - name: Deploy Storybook to GitHub Pages
         uses: bitovi/github-actions-storybook-to-github-pages@v1.0.0
         with:
-          node-version: 18
+          path: comp0nents/storybook-static
