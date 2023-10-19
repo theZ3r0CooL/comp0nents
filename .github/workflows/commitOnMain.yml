@@ -1,17 +1,13 @@
 name: Commit on Main
-
 on:
   push:
     branches: [main]
-
 permissions:
   id-token: write
   pages: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node
@@ -20,8 +16,6 @@ jobs:
           node-version: 18
       - name: Install Dependencies & Build Rollup
         run: npm i
-      #- name: Build Storybook
-      #  run: npm run build-storybook
       - name: Deploy Storybook to GitHub Pages
         uses: bitovi/github-actions-storybook-to-github-pages@v1.0.0
         with:
